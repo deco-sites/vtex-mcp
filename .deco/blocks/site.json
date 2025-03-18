@@ -39,10 +39,12 @@
   },
   "appKey": {
     "__resolveType": "website/loaders/secret.ts",
-    "name": "VTEX_APP_KEY"
+    "name": "VTEX_APP_KEY",
+    "encrypted": "8f64333a1b8a6a2387f6c95254843a9cfce2122c127c8948cfb1fdb881d3e433"
   },
   "appToken": {
     "__resolveType": "website/loaders/secret.ts",
-    "name": "VTEX_APP_TOKEN"
+    "name": "VTEX_APP_TOKEN",
+    "encrypted": "592181b7b1fb288b288f87e5ed00b66d1dfb618774572563aa49cff0d5d7fd284cc0993723e15b84b231322368f5a76ddc94b20ee51b983cf483d89798e98db290c3efb0d37f7fc033ce6c021def6b83a311fd937f838516f936ed34ad699abb4ff472edd72bcc1fb7ea3203f421fbb60b87eb9df49859c0cc45b68b504afc25e48d551aa28d894c6940793e10376b99"
   }
 }
