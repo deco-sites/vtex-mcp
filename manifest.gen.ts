@@ -8,20 +8,20 @@ import * as $$$0 from "./loaders/brands/brands.ts";
 import * as $$$1 from "./loaders/categories/tree.ts";
 import * as $$$2 from "./loaders/collections/list.ts";
 import * as $$$3 from "./loaders/intelligentSearch/productList.ts";
-import * as $$$4 from "./loaders/intelligentSearch/suggestions.ts";
+import * as $$$4 from "./loaders/intelligentSearch/searchByTerm.ts";
 import * as $$$5 from "./loaders/intelligentSearch/topsearches.ts";
 import * as $$$6 from "./loaders/logistics/getSalesChannelById.ts";
 import * as $$$7 from "./loaders/logistics/listPickupPoints.ts";
 import * as $$$8 from "./loaders/logistics/listPickupPointsByLocation.ts";
-import * as $$$9 from "./loaders/logistics/listSalesChannelById.ts";
+import * as $$$9 from "./loaders/logistics/listSalesChannel.ts";
 import * as $$$10 from "./loaders/logistics/listStockByStore.ts";
 import * as $$$11 from "./loaders/masterdata/searchDocuments.ts";
-import * as $$$12 from "./loaders/orders/listOrders.ts";
+import * as $$$12 from "./loaders/orders/listAllOrders.ts";
 import * as $$$13 from "./loaders/orders/listUserOrders.ts";
 import * as $$$14 from "./loaders/product/productBySlug.ts";
 import * as $$$15 from "./loaders/product/productList.ts";
 import * as $$$16 from "./loaders/product/relatedProducts.ts";
-import * as $$$17 from "./loaders/product/suggestions.ts";
+import * as $$$17 from "./loaders/product/searchByTerm.ts";
 import * as $$$18 from "./loaders/promotion/getPromotionById.ts";
 
 const manifest = {
@@ -30,20 +30,20 @@ const manifest = {
     "site/loaders/categories/tree.ts": $$$1,
     "site/loaders/collections/list.ts": $$$2,
     "site/loaders/intelligentSearch/productList.ts": $$$3,
-    "site/loaders/intelligentSearch/suggestions.ts": $$$4,
+    "site/loaders/intelligentSearch/searchByTerm.ts": $$$4,
     "site/loaders/intelligentSearch/topsearches.ts": $$$5,
     "site/loaders/logistics/getSalesChannelById.ts": $$$6,
     "site/loaders/logistics/listPickupPoints.ts": $$$7,
     "site/loaders/logistics/listPickupPointsByLocation.ts": $$$8,
-    "site/loaders/logistics/listSalesChannelById.ts": $$$9,
+    "site/loaders/logistics/listSalesChannel.ts": $$$9,
     "site/loaders/logistics/listStockByStore.ts": $$$10,
     "site/loaders/masterdata/searchDocuments.ts": $$$11,
-    "site/loaders/orders/listOrders.ts": $$$12,
+    "site/loaders/orders/listAllOrders.ts": $$$12,
     "site/loaders/orders/listUserOrders.ts": $$$13,
     "site/loaders/product/productBySlug.ts": $$$14,
     "site/loaders/product/productList.ts": $$$15,
     "site/loaders/product/relatedProducts.ts": $$$16,
-    "site/loaders/product/suggestions.ts": $$$17,
+    "site/loaders/product/searchByTerm.ts": $$$17,
     "site/loaders/promotion/getPromotionById.ts": $$$18,
   },
   "apps": {

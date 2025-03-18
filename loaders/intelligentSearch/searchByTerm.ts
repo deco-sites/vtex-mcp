@@ -4,9 +4,7 @@ import {
   withDefaultFacets,
   withDefaultParams,
 } from "apps/vtex/utils/intelligentSearch.ts";
-import { withSegmentCookie } from "apps/vtex/utils/segment.ts";
 import { AppContext } from "site/apps/site.ts";
-import { getSegmentFromBag } from "site/sdk/segment.ts";
 
 export interface Props {
   query?: string;
@@ -23,7 +21,7 @@ export interface Props {
 }
 
 /**
- * @name intelligent_search_suggestions
+ * @name intelligent_search_search_by_term
  * @description Get product suggestions from VTEX Catalog System. Uses the Intelligent Search API.
  */
 const loaders = async (
@@ -33,23 +31,18 @@ const loaders = async (
 ) => {
   const { vcsDeprecated } = ctx;
   const { count, query } = props;
-  const segment = getSegmentFromBag(ctx);
-  const locale = segment?.payload?.cultureInfo ?? "pt-BR";
+  const locale = "pt-BR";
 
   const suggestions = () =>
     vcsDeprecated["GET /api/io/_v/api/intelligent-search/search_suggestions"]({
       locale,
       query: query ?? "",
-    }, {
-      // Not adding suggestions to cache since queries are very spread out
-      // deco: { cache: "stale-while-revalidate" },
-      headers: withSegmentCookie(segment),
     }).then((res) => res.json());
 
   const topSearches = () =>
     vcsDeprecated["GET /api/io/_v/api/intelligent-search/top_searches"]({
       locale,
-    }, { ...STALE, headers: withSegmentCookie(segment) })
+    }, { ...STALE })
       .then((res) => res.json());
 
   const productSearch = () => {
@@ -61,7 +54,7 @@ const loaders = async (
       ["GET /api/io/_v/api/intelligent-search/product_search/*facets"]({
         ...params,
         facets: toPath(facets),
-      }, { ...STALE, headers: withSegmentCookie(segment) })
+      }, { ...STALE })
       .then((res) => res.json());
   };
 

@@ -9,7 +9,6 @@ import {
   withDefaultFacets,
   withDefaultParams,
 } from "apps/vtex/utils/intelligentSearch.ts";
-import { withSegmentCookie } from "apps/vtex/utils/segment.ts";
 import type { ProductID, Sort } from "apps/vtex/utils/types.ts";
 import { AppContext } from "site/apps/site.ts";
 import { getSegmentFromBag } from "site/sdk/segment.ts";
@@ -187,8 +186,7 @@ const loader = async (
   const props = expandedProps.props ??
     (expandedProps as unknown as Props["props"]);
   const { vcsDeprecated } = ctx;
-  const segment = getSegmentFromBag(ctx);
-  const locale = segment?.payload?.cultureInfo ?? "pt-BR";
+  const locale = "pt-BR";
 
   const { selectedFacets, ...args } = fromProps({ props });
   const params = withDefaultParams({ ...args, locale });
@@ -199,7 +197,7 @@ const loader = async (
     ["GET /api/io/_v/api/intelligent-search/product_search/*facets"]({
       ...params,
       facets: toPath(facets),
-    }, { ...STALE, headers: withSegmentCookie(segment) })
+    }, { ...STALE })
     .then((res) => res.json());
 
   return vtexProducts;

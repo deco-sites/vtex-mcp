@@ -1,6 +1,5 @@
 import { STALE } from "apps/utils/fetch.ts";
-import { isFilterParam, toSegmentParams } from "apps/vtex/utils/legacy.ts";
-import { withSegmentCookie } from "apps/vtex/utils/segment.ts";
+import { isFilterParam } from "apps/vtex/utils/legacy.ts";
 import type { LegacySort } from "apps/vtex/utils/types.ts";
 import { AppContext } from "site/apps/site.ts";
 import { getSegmentFromBag } from "site/sdk/segment.ts";
@@ -182,15 +181,12 @@ const loader = async (
   const props = expandedProps.props ??
     (expandedProps as unknown as Props["props"]);
   const { vcsDeprecated } = ctx;
-  const segment = getSegmentFromBag(ctx) ?? {};
-  const segmentParams = toSegmentParams(segment ?? {});
   const params = fromProps({ props });
 
   const vtexProducts = await vcsDeprecated
     ["GET /api/catalog_system/pub/products/search/:term?"]({
-      ...segmentParams,
       ...params,
-    }, { ...STALE, headers: withSegmentCookie(segment) })
+    }, { ...STALE })
     .then((res) => res.json());
 
   if (vtexProducts && !Array.isArray(vtexProducts)) {

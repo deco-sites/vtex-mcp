@@ -1,7 +1,6 @@
 import { STALE } from "apps/utils/fetch.ts";
 import { batch } from "apps/vtex/utils/batch.ts";
-import { isFilterParam, toSegmentParams } from "apps/vtex/utils/legacy.ts";
-import { withSegmentCookie } from "apps/vtex/utils/segment.ts";
+import { isFilterParam } from "apps/vtex/utils/legacy.ts";
 import { pickSku } from "apps/vtex/utils/transform.ts";
 import type { CrossSellingType, LegacyProduct } from "apps/vtex/utils/types.ts";
 import { AppContext } from "site/apps/site.ts";
@@ -42,8 +41,6 @@ async function loader(
     crossSelling = "similars",
     count,
   } = props;
-  const segment = getSegmentFromBag(ctx);
-  const params = toSegmentParams(segment);
 
   const getProductGroupID = async (props: { slug?: string; id?: string }) => {
     const { id, slug } = props;
@@ -79,8 +76,7 @@ async function loader(
     ["GET /api/catalog_system/pub/products/crossselling/:type/:productId"]({
       type: crossSelling,
       productId,
-      ...params,
-    }, { ...STALE, headers: withSegmentCookie(segment) })
+    }, { ...STALE })
     .then((res) => res.json());
 
   if (products && !Array.isArray(products)) {

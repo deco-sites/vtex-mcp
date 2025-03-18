@@ -37,11 +37,6 @@ export default function Site(props: Props): App<Manifest, State> {
     headers.set("X-VTEX-API-AppToken", props.appToken.get()!);
   }
 
-  console.log({
-    appKey: props.appKey?.get(),
-    appToken: props.appToken?.get(),
-  });
-
   const account = props.account;
 
   const vcs = createHttpClient<VCS>({

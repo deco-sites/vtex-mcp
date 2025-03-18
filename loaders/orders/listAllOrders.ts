@@ -131,7 +131,7 @@ interface Props {
 }
 
 /**
- * @name list_orders
+ * @name list_all_orders
  * @description List orders
  */
 export default async function loader(

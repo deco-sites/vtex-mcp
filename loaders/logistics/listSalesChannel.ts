@@ -2,7 +2,7 @@ import type { AppContext } from "site/apps/site.ts";
 import { SalesChannel } from "apps/vtex/utils/types.ts";
 
 /**
- * @name list_sales_channel_by_id
+ * @name list_sales_channel
  * @description List all sales channels
  */
 export default async function loader(

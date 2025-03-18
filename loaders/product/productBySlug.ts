@@ -1,6 +1,4 @@
 import { STALE } from "apps/utils/fetch.ts";
-import { toSegmentParams } from "apps/vtex/utils/legacy.ts";
-import { withSegmentCookie } from "apps/vtex/utils/segment.ts";
 import { AppContext } from "site/apps/site.ts";
 import { getSegmentFromBag } from "site/sdk/segment.ts";
 import { withIsSimilarTo } from "site/sdk/withIsSimilarTo.ts";
@@ -27,13 +25,11 @@ async function loader(
   const { slug } = props;
 
   const lowercaseSlug = slug?.toLowerCase() || "/";
-  const segment = getSegmentFromBag(ctx);
-  const params = toSegmentParams(segment);
 
   const response = await vcsDeprecated
     ["GET /api/catalog_system/pub/products/search/:slug/p"](
-      { ...params, slug: lowercaseSlug },
-      { ...STALE, headers: withSegmentCookie(segment) },
+      { slug: lowercaseSlug },
+      { ...STALE },
     ).then((res) => res.json());
 
   if (response && !Array.isArray(response)) {

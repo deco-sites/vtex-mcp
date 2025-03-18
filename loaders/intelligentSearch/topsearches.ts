@@ -1,6 +1,5 @@
 import { Suggestion } from "apps/commerce/types.ts";
 import { STALE } from "apps/utils/fetch.ts";
-import { withSegmentCookie } from "apps/vtex/utils/segment.ts";
 import { AppContext } from "site/apps/site.ts";
 import { getSegmentFromBag } from "site/sdk/segment.ts";
 
@@ -19,6 +18,6 @@ export default async function (
   return await ctx.vcsDeprecated
     ["GET /api/io/_v/api/intelligent-search/top_searches"]({
       locale,
-    }, { ...STALE, headers: withSegmentCookie(segment) })
+    }, { ...STALE })
     .then((res) => res.json());
 }
