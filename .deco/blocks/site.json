@@ -10,11 +10,7 @@
     "favicon": "https://ozksgdmyrqcxcwhnbepg.supabase.co/storage/v1/object/public/assets/8/40cc7da0-93d3-4215-9c2a-04b2f86b0a47",
     "image": "https://ozksgdmyrqcxcwhnbepg.supabase.co/storage/v1/object/public/assets/8/22c99167-0018-484f-8b0d-4295a7d771f2"
   },
-  "global": [
-    {
-      "__resolveType": "htmx/sections/htmx.tsx"
-    }
-  ],
+  "global": [],
   "routes": [
     {
       "__resolveType": "website/loaders/pages.ts"
@@ -28,7 +24,25 @@
   },
   "__resolveType": "site/apps/site.ts",
   "firstByteThresholdMS": true,
-  "theme": {
-    "__resolveType": "Neutral"
+  "account": "alssports",
+  "abTesting": {
+    "replaces": [],
+    "includeScriptsToHead": {
+      "includes": []
+    },
+    "includeScriptsToBody": {
+      "includes": []
+    }
+  },
+  "flavor": {
+    "framework": "fresh"
+  },
+  "appKey": {
+    "__resolveType": "website/loaders/secret.ts",
+    "name": "VTEX_APP_KEY"
+  },
+  "appToken": {
+    "__resolveType": "website/loaders/secret.ts",
+    "name": "VTEX_APP_TOKEN"
   }
 }
