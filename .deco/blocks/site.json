@@ -40,11 +40,11 @@
   "appKey": {
     "__resolveType": "website/loaders/secret.ts",
     "name": "VTEX_APP_KEY",
-    "encrypted": "8f64333a1b8a6a2387f6c95254843a9cfce2122c127c8948cfb1fdb881d3e433"
+    "encrypted": "de80dc352de4ebd96a7a7cafc4c596af1f41f4ae41744aa68175c868ba7c6266ac0e35b7c73fe10e91f0c77d7018e300"
   },
   "appToken": {
     "__resolveType": "website/loaders/secret.ts",
     "name": "VTEX_APP_TOKEN",
-    "encrypted": "592181b7b1fb288b288f87e5ed00b66d1dfb618774572563aa49cff0d5d7fd284cc0993723e15b84b231322368f5a76ddc94b20ee51b983cf483d89798e98db290c3efb0d37f7fc033ce6c021def6b83a311fd937f838516f936ed34ad699abb4ff472edd72bcc1fb7ea3203f421fbb60b87eb9df49859c0cc45b68b504afc25e48d551aa28d894c6940793e10376b99"
+    "encrypted": "dee6ea572954bc14a19e079c72b293292f0d6c7114c0323b0a8059051d7c2e96668653543139b2b460ddf77ced6ff1e5e1d1d24b7f04ae5492bdc9b520cbad4650a4a17031accaac1d55832f505a7bb2825237fb5a34b7ad44ce6aa39d75ed62ba01ada7ddb970c904c86b68139e61b94e2fa5191828f4f56e2c63e797b5deac021d393b75e269c53303d97a9a40c7de"
   }
 }
