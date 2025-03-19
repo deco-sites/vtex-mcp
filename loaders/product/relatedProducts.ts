@@ -5,7 +5,7 @@ import { pickSku } from "apps/vtex/utils/transform.ts";
 import type { CrossSellingType, LegacyProduct } from "apps/vtex/utils/types.ts";
 import { AppContext } from "site/apps/site.ts";
 import { getSegmentFromBag } from "site/sdk/segment.ts";
-import productList from "./productList.ts";
+import productList from "./productListBySkuIds.ts";
 
 export interface Props {
   /**
@@ -94,9 +94,7 @@ async function loader(
   const batchedIds = batch(relatedIds, 50);
 
   const relatedProductsResults = await Promise.allSettled(
-    batchedIds.map((ids) =>
-      productList({ props: { similars: false, ids } }, req, ctx)
-    ),
+    batchedIds.map((ids) => productList({ similars: false, ids }, req, ctx)),
   );
 
   const relatedProducts = relatedProductsResults

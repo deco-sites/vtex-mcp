@@ -11,6 +11,7 @@ const envPort = Deno.env.get("PORT");
 
 app.use(
   "/*",
+  // @ts-ignore ignore mcpServer type error
   mcpServer(deco, {
     exclude: [
       "website/loaders/asset.ts",

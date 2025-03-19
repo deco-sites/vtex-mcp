@@ -12,12 +12,18 @@ interface Props {
   account: string;
   appKey?: Secret;
   appToken?: Secret;
+  /**
+   * @description When set to true, all actions will be prevented from executing
+   * @default false
+   */
+  disableActions?: boolean;
 }
 
 interface State extends Props {
   vcs: ClientOf<VCS>;
   io: ReturnType<typeof createGraphqlClient>;
   vcsDeprecated: ClientOf<VTEXCommerceStable>;
+  disableActions: boolean;
 }
 
 /**
@@ -79,6 +85,7 @@ export default function Site(props: Props): App<Manifest, State> {
     vcs,
     io,
     vcsDeprecated,
+    disableActions: props.disableActions === true,
   };
 
   return {
