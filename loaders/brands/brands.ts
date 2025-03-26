@@ -5,6 +5,10 @@ interface Props {
    * @description Indicates whether to filter inactive brands
    */
   filterInactive?: boolean;
+  /**
+   * @description The number of brands to return
+   */
+  count?: number;
 }
 
 /**
@@ -16,7 +20,7 @@ const loaders = async (
   _req: Request,
   ctx: AppContext,
 ) => {
-  const { filterInactive = false } = props;
+  const { filterInactive = false, count = 100 } = props;
   const { vcsDeprecated } = ctx;
 
   const brands = await vcsDeprecated["GET /api/catalog_system/pub/brand/list"](
@@ -33,11 +37,18 @@ const loaders = async (
     return brands.filter((brand) => brand.isActive);
   }
 
-  return brands;
+  return brands.slice(0, count);
 };
 
 export default loaders;
 
 export const cache = "stale-while-revalidate";
-export const cacheKey = (props: Props) =>
-  props.filterInactive ? "brands-filtered" : "brands";
+export const cacheKey = (props: Props) => {
+  const url = new URL("https://example.com");
+  url.searchParams.set(
+    "filterInactive",
+    props.filterInactive?.toString() ?? "false",
+  );
+  url.searchParams.set("count", props.count?.toString() ?? "100");
+  return url.search;
+};

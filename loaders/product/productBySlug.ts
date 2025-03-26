@@ -1,6 +1,8 @@
 import { STALE } from "apps/utils/fetch.ts";
-import { AppContext } from "site/apps/site.ts";
+import { LegacyProduct } from "apps/vtex/utils/types.ts";
+import type { AppContext } from "site/apps/site.ts";
 import { getSegmentFromBag } from "site/sdk/segment.ts";
+import type { ProductProperties } from "site/sdk/vcs.ts";
 import { withIsSimilarTo } from "site/sdk/withIsSimilarTo.ts";
 
 export interface Props {
@@ -10,6 +12,37 @@ export interface Props {
    * @deprecated Use product extensions instead
    */
   similars?: boolean;
+  /**
+   * @description Select specific properties to return. Values:
+   * - allSpecifications
+   * - allSpecificationsGroups
+   * - brand
+   * - brandId
+   * - brandImageUrl
+   * - cacheId
+   * - categories
+   * - categoriesIds
+   * - categoryId
+   * - clusterHighlights
+   * - description
+   * - items
+   * - link
+   * - linkText
+   * - metaTagDescription
+   * - origin
+   * - priceRange
+   * - productClusters
+   * - productId
+   * - productName
+   * - productReference
+   * - productTitle
+   * - properties
+   * - releaseDate
+   * - selectedProperties
+   * - skuSpecifications
+   * - specificationGroups
+   */
+  select?: ProductProperties[];
 }
 
 /**
@@ -20,9 +53,9 @@ async function loader(
   props: Props,
   req: Request,
   ctx: AppContext,
-) {
+): Promise<LegacyProduct & { similars: LegacyProduct[] | null } | null> {
   const { vcsDeprecated } = ctx;
-  const { slug } = props;
+  const { slug, select } = props;
 
   const lowercaseSlug = slug?.toLowerCase() || "/";
 
@@ -49,8 +82,14 @@ async function loader(
     ? await withIsSimilarTo(req, ctx, product.productId)
     : null;
 
+  const partialProduct = select?.reduce((acc, prop) => {
+    acc[prop] = product[prop];
+    return acc;
+    // deno-lint-ignore no-explicit-any
+  }, {} as Record<ProductProperties, any>) || product;
+
   return {
-    ...product,
+    ...partialProduct,
     similars,
   };
 }
@@ -71,6 +110,7 @@ export const cacheKey = (props: Props, req: Request, ctx: AppContext) => {
     ["slug", props.slug],
     ["segment", segment],
     ["skuId", skuId],
+    ["select", props.select?.sort().join(",") ?? ""],
   ]);
 
   params.sort();

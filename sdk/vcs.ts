@@ -1,4 +1,7 @@
-import { OpenAPI } from "apps/vtex/utils/openapi/vcs.openapi.gen.ts";
+import type { OpenAPI } from "apps/vtex/utils/openapi/vcs.openapi.gen.ts";
+import type { LegacyProduct } from "apps/vtex/utils/types.ts";
+
+export type ProductProperties = keyof LegacyProduct;
 
 export interface VCS extends OpenAPI {
   "GET /api/oms/pvt/orders": {
@@ -509,5 +512,46 @@ export interface VCS extends OpenAPI {
       maxUsage?: number;
       groupingKey?: string;
     };
+  };
+
+  "GET /api/logistics/pvt/inventory/skus/{skuId}": {
+    params: {
+      skuId: string;
+    };
+    response: {
+      skuId: string;
+      balance: Array<{
+        warehouseId: string;
+        warehouseName: string;
+        totalQuantity: number;
+        reservedQuantity: number;
+        hasUnlimitedQuantity: boolean;
+        timeToRefill: string | null;
+        dateOfSupplyUtc: string | null;
+        leadTime: string;
+      }>;
+    };
+  };
+
+  "GET /api/logistics/pvt/inventory/items/{skuId}/warehouses/{warehouseId}": {
+    params: {
+      skuId: string;
+      warehouseId: string;
+    };
+    response: Array<{
+      skuId: string;
+      warehouseId: string;
+      dockId: string;
+      totalQuantity: number;
+      reservedQuantity: number;
+      availableQuantity: number;
+      isUnlimited: boolean;
+      salesChannel: string[];
+      deliveryChannel: string[];
+      timeToRefill: string | null;
+      dateOfSupplyUtc: string | null;
+      keepSellingAfterExpiration: boolean;
+      transfer: string;
+    }>;
   };
 }

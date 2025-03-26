@@ -1,8 +1,8 @@
 import { STALE } from "apps/utils/fetch.ts";
-import type { LegacySort } from "apps/vtex/utils/types.ts";
-import { AppContext } from "site/apps/site.ts";
-import { getSegmentFromBag } from "site/sdk/segment.ts";
 import { isFilterParam } from "apps/vtex/utils/legacy.ts";
+import type { LegacyProduct, LegacySort } from "apps/vtex/utils/types.ts";
+import { AppContext } from "site/apps/site.ts";
+import { ProductProperties } from "site/sdk/vcs.ts";
 
 export interface Props {
   /**
@@ -22,6 +22,37 @@ export interface Props {
    * @deprecated Use product extensions instead
    */
   similars?: boolean;
+  /**
+   * @description Select specific properties to return. Values:
+   * - allSpecifications
+   * - allSpecificationsGroups
+   * - brand
+   * - brandId
+   * - brandImageUrl
+   * - cacheId
+   * - categories
+   * - categoriesIds
+   * - categoryId
+   * - clusterHighlights
+   * - description
+   * - items
+   * - link
+   * - linkText
+   * - metaTagDescription
+   * - origin
+   * - priceRange
+   * - productClusters
+   * - productId
+   * - productName
+   * - productReference
+   * - productTitle
+   * - properties
+   * - releaseDate
+   * - selectedProperties
+   * - skuSpecifications
+   * - specificationGroups
+   */
+  select?: ProductProperties[];
 }
 
 /**
@@ -67,7 +98,17 @@ const loader = async (
     );
   }
 
-  return vtexProducts;
+  const partialProducts = props.select?.length
+    ? vtexProducts.map((product) =>
+      props.select!.reduce((acc, prop) => {
+        acc[prop] = product[prop];
+        return acc;
+        // deno-lint-ignore no-explicit-any
+      }, {} as Record<ProductProperties, any>)
+    )
+    : vtexProducts;
+
+  return partialProducts as LegacyProduct[];
 };
 
 export const cache = "stale-while-revalidate";
@@ -75,21 +116,14 @@ export const cache = "stale-while-revalidate";
 export const cacheKey = (
   props: Props,
   req: Request,
-  ctx: AppContext,
 ) => {
   const url = new URL(req.url);
 
-  // Avoid cache on loader call over call and on search pages with query parameter
-  if ((!props.term && url.searchParams.has("q")) || ctx.isInvoke) {
-    return null;
-  }
-
-  const segment = getSegmentFromBag(ctx)?.token ?? "";
   const params = new URLSearchParams([
     ["term", props.term ?? ""],
     ["count", (props.count || 12).toString()],
     ["sort", props.sort || ""],
-    ["segment", segment],
+    ["select", props.select?.sort().join(",") ?? ""],
   ]);
 
   url.searchParams.forEach((value, key) => {
