@@ -554,4 +554,19 @@ export interface VCS extends OpenAPI {
       transfer: string;
     }>;
   };
+
+  "GET /api/logistics/pvt/configuration/warehouses": {
+    response: Array<{
+      id: string;
+      name: string;
+      warehouseDocks: Array<{
+        dockId: string;
+        time: string;
+        cost: number;
+      }>;
+      pickupPointIds: string[];
+      priority: number;
+      isActive: boolean;
+    }>;
+  };
 }
