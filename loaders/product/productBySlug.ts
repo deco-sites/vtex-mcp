@@ -13,36 +13,11 @@ export interface Props {
    */
   similars?: boolean;
   /**
-   * @description Select specific properties to return. Values:
-   * - allSpecifications
-   * - allSpecificationsGroups
-   * - brand
-   * - brandId
-   * - brandImageUrl
-   * - cacheId
-   * - categories
-   * - categoriesIds
-   * - categoryId
-   * - clusterHighlights
-   * - description
-   * - items
-   * - link
-   * - linkText
-   * - metaTagDescription
-   * - origin
-   * - priceRange
-   * - productClusters
-   * - productId
-   * - productName
-   * - productReference
-   * - productTitle
-   * - properties
-   * - releaseDate
-   * - selectedProperties
-   * - skuSpecifications
-   * - specificationGroups
+   * @title Select specific properties to return
+   * @name select_properties
+   * @description Select specific properties to return. Values: - all (returns all properties) - allSpecifications - allSpecificationsGroups - brand - brandId - brandImageUrl - cacheId - categories - categoriesIds - categoryId - clusterHighlights - description - items - link - linkText - metaTagDescription - origin - priceRange - productClusters - productId - productName - productReference - productTitle - properties - releaseDate - selectedProperties - skuSpecifications - specificationGroups
    */
-  select?: ProductProperties[];
+  select: ("all" | ProductProperties)[];
 }
 
 /**
@@ -82,11 +57,13 @@ async function loader(
     ? await withIsSimilarTo(req, ctx, product.productId)
     : null;
 
-  const partialProduct = select?.reduce((acc, prop) => {
-    acc[prop] = product[prop];
-    return acc;
-    // deno-lint-ignore no-explicit-any
-  }, {} as Record<ProductProperties, any>) || product;
+  const partialProduct = select?.length && !select.includes("all")
+    ? select.reduce((acc, prop) => {
+      acc[prop] = product[prop];
+      return acc;
+      // deno-lint-ignore no-explicit-any
+    }, {} as Record<ProductProperties, any>)
+    : product;
 
   return {
     ...partialProduct,

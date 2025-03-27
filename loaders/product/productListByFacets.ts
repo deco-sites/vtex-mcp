@@ -23,36 +23,11 @@ export interface Props {
    */
   similars?: boolean;
   /**
-   * @description Select specific properties to return. Values:
-   * - allSpecifications
-   * - allSpecificationsGroups
-   * - brand
-   * - brandId
-   * - brandImageUrl
-   * - cacheId
-   * - categories
-   * - categoriesIds
-   * - categoryId
-   * - clusterHighlights
-   * - description
-   * - items
-   * - link
-   * - linkText
-   * - metaTagDescription
-   * - origin
-   * - priceRange
-   * - productClusters
-   * - productId
-   * - productName
-   * - productReference
-   * - productTitle
-   * - properties
-   * - releaseDate
-   * - selectedProperties
-   * - skuSpecifications
-   * - specificationGroups
+   * @title Select specific properties to return
+   * @name select_properties
+   * @description Select specific properties to return. Values: - all (returns all properties) - allSpecifications - allSpecificationsGroups - brand - brandId - brandImageUrl - cacheId - categories - categoriesIds - categoryId - clusterHighlights - description - items - link - linkText - metaTagDescription - origin - priceRange - productClusters - productId - productName - productReference - productTitle - properties - releaseDate - selectedProperties - skuSpecifications - specificationGroups
    */
-  select?: ProductProperties[];
+  select: ("all" | ProductProperties)[];
 }
 
 /**
@@ -97,7 +72,7 @@ const loader = async (
     );
   }
 
-  const partialProducts = props.select?.length
+  const partialProducts = props.select?.length && !props.select.includes("all")
     ? vtexProducts.map((product) =>
       props.select!.reduce((acc, prop) => {
         acc[prop] = product[prop];
