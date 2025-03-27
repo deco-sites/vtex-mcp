@@ -24,7 +24,7 @@
   },
   "__resolveType": "site/apps/site.ts",
   "firstByteThresholdMS": true,
-  "account": "bawclothing",
+  "account": "decopartnerbr",
   "abTesting": {
     "replaces": [],
     "includeScriptsToHead": {
@@ -40,12 +40,12 @@
   "appKey": {
     "__resolveType": "website/loaders/secret.ts",
     "name": "VTEX_APP_KEY",
-    "encrypted": "cb8e56c62ee7bb89d494e60772429ed1e69adc3c49ba8704b530ca63e42090cd"
+    "encrypted": "9a95106113ef2e2770c006f0dd514a9bbe9face690e6514aaf47ca807335f60d"
   },
   "appToken": {
     "__resolveType": "website/loaders/secret.ts",
     "name": "VTEX_APP_TOKEN",
-    "encrypted": "a6d2b525f2f2748a4e9a7ecf2836a19e788cd635d79ebb1db8a66217299deec235b32a0c643db4a1695a25cb51165b236d2488c3bbc31a5b27e5584e37cd339f381c0240aeb84067b6f8c7e8e84f8e8992278fe39722c9bba4b3bea91afedbedf9d638e32a7c34688e2f0d1fcb273104a3869cbee35566e2c4997ac1d2a80b3f271dd488f9cb028ad873abe5c047b3a0"
+    "encrypted": "fb908a910df81481553373f56516f42db484147b900db6b7af219d7e5fa69edff2e78fd04c6f8b8cefa0b41a1068433943a1b5f6508a6714d5006b599916e24545ed3b42d8791708892f0c2f12951c338337917753d622e4df4bd4b8aa951341ced6d296347242b26515631f834a733fc33662b6b79a87e1ae547bdbec17889787e4715c2d65f9ec35269ceaee802b8c"
   },
   "disableActions": true
 }
