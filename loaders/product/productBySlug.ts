@@ -17,7 +17,36 @@ export interface Props {
    * @name select_properties
    * @description Select specific properties to return. Values: - all (returns all properties) - allSpecifications - allSpecificationsGroups - brand - brandId - brandImageUrl - cacheId - categories - categoriesIds - categoryId - clusterHighlights - description - items - link - linkText - metaTagDescription - origin - priceRange - productClusters - productId - productName - productReference - productTitle - properties - releaseDate - selectedProperties - skuSpecifications - specificationGroups
    */
-  select: ("all" | ProductProperties)[];
+  select: (
+    | "all"
+    | "allSpecifications"
+    | "allSpecificationsGroups"
+    | "brand"
+    | "brandId"
+    | "brandImageUrl"
+    | "cacheId"
+    | "categories"
+    | "categoriesIds"
+    | "categoryId"
+    | "clusterHighlights"
+    | "description"
+    | "items"
+    | "link"
+    | "linkText"
+    | "metaTagDescription"
+    | "origin"
+    | "priceRange"
+    | "productClusters"
+    | "productId"
+    | "productName"
+    | "productReference"
+    | "productTitle"
+    | "properties"
+    | "releaseDate"
+    | "selectedProperties"
+    | "skuSpecifications"
+    | "specificationGroups"
+  )[];
 }
 
 /**
