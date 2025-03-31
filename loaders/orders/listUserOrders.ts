@@ -1,9 +1,14 @@
 import { AppContext } from "site/apps/site.ts";
+import getClient from "site/utils/getClient.ts";
 
 export interface Props {
   clientEmail: string;
   page?: string;
   per_page?: string;
+  /**
+   * @description The account name
+   */
+  accountName: string;
 }
 
 /**
@@ -13,9 +18,9 @@ export interface Props {
 export default async function loader(
   props: Props,
   _req: Request,
-  ctx: AppContext,
+  _ctx: AppContext,
 ) {
-  const { vcs } = ctx;
+  const vcs = getClient(props.accountName);
   const { clientEmail, page = "0", per_page = "15" } = props;
 
   const ordersResponse = await vcs

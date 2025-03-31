@@ -1,5 +1,6 @@
 import type { PickupPoint } from "apps/vtex/utils/types.ts";
 import type { AppContext } from "site/apps/site.ts";
+import getClient from "site/utils/getClient.ts";
 
 interface Props {
   /**
@@ -14,6 +15,10 @@ interface Props {
    * @description Three letter country code referring to the postalCode field. Pass the country code only if you are searching pickup points by postal code.
    */
   countryCode?: string;
+  /**
+   * @description The account name
+   */
+  accountName: string;
 }
 
 /**
@@ -23,10 +28,10 @@ interface Props {
 export default async function loader(
   props: Props,
   _req: Request,
-  ctx: AppContext,
+  _ctx: AppContext,
 ) {
-  const { geoCoordinates, postalCode, countryCode } = props;
-  const { vcs } = ctx;
+  const { geoCoordinates, postalCode, countryCode, accountName } = props;
+  const vcs = getClient(accountName);
 
   const _props = geoCoordinates
     ? { geoCoordinates }

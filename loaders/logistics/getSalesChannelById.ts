@@ -1,8 +1,10 @@
 import type { AppContext } from "site/apps/site.ts";
 import { SalesChannel } from "apps/vtex/utils/types.ts";
+import getClient from "site/utils/getClient.ts";
 
 interface Props {
   id: string;
+  accountName: string;
 }
 
 /**
@@ -14,7 +16,7 @@ export default async function loader(
   _req: Request,
   ctx: AppContext,
 ): Promise<SalesChannel> {
-  const { vcs } = ctx;
+  const vcs = getClient(ctx.account);
 
   const salesChannel = await vcs
     ["GET /api/catalog_system/pub/saleschannel/:salesChannelId"]({

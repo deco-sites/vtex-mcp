@@ -2,6 +2,7 @@ import { resourceRange } from "apps/vtex/utils/resourceRange.ts";
 import type { Document } from "apps/vtex/utils/types.ts";
 import { parseCookie } from "apps/vtex/utils/vtexId.ts";
 import { AppContext } from "site/apps/site.ts";
+import getClient from "site/utils/getClient.ts";
 
 interface Props {
   /**
@@ -34,6 +35,10 @@ interface Props {
    * @minValue 0
    */
   skip?: number;
+  /**
+   * @description The account name
+   */
+  accountName: string;
 }
 
 /**
@@ -46,7 +51,7 @@ export default async function loader(
   req: Request,
   ctx: AppContext,
 ): Promise<Document[]> {
-  const { vcs } = ctx;
+  const vcs = getClient(props.accountName);
   const { acronym, fields, where, sort, skip = 0, take = 10 } = props;
   const { cookie } = parseCookie(req.headers, ctx.account);
   const limits = resourceRange(skip, take);
