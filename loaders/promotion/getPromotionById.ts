@@ -1,37 +1,46 @@
+import { STALE } from "apps/utils/fetch.ts";
 import { AppContext } from "site/apps/site.ts";
-import type { Document } from "apps/vtex/utils/types.ts";
-import { parseCookie } from "apps/vtex/utils/vtexId.ts";
+import getClient from "site/utils/getClient.ts";
 
 interface Props {
-  /**
-   * @description Promotion ID.
-   */
-  idCalculatorConfiguration: string;
+  accountName: string;
+  promotionId: string;
 }
 
 /**
- * @name get_promotion_by_id
- * @description Get a promotion by ID
+ * @name promotion_by_id
+ * @description Get a specific promotion by its ID
  */
-export default async function loader(
+const loader = async (
   props: Props,
-  req: Request,
-  ctx: AppContext,
-): Promise<Document[]> {
-  const { vcs } = ctx;
-  const { idCalculatorConfiguration } = props;
-  const { cookie } = parseCookie(req.headers, ctx.account);
+  _req: Request,
+  _ctx: AppContext,
+) => {
+  const { promotionId, accountName } = props;
+  const vcs = getClient(accountName);
 
-  const promotionById = await vcs
-    ["GET /api/rnb/pvt/calculatorconfiguration/:idCalculatorConfiguration"]({
-      idCalculatorConfiguration,
-    }, {
-      headers: {
-        accept: "application/json",
-        "content-type": "application/json",
-        cookie,
-      },
-    }).then((response: Response) => response.json());
+  if (!promotionId) {
+    throw new Error("Promotion ID is required");
+  }
 
-  return promotionById;
-}
+  try {
+    const response = await vcs
+      ["GET /api/rnb/pvt/calculatorconfiguration/:idCalculatorConfiguration"](
+        { idCalculatorConfiguration: promotionId },
+        { ...STALE },
+      );
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching promotion by ID:", error);
+    throw error instanceof Error
+      ? error
+      : new Error("Failed to fetch promotion by ID");
+  }
+};
+
+export const cache = "stale-while-revalidate";
+export const cacheKey = (props: Props) =>
+  `promotion_${props.promotionId}_${props.accountName}`;
+
+export default loader;

@@ -1,82 +1,39 @@
 import { STALE } from "apps/utils/fetch.ts";
 import { AppContext } from "site/apps/site.ts";
+import getClient from "site/utils/getClient.ts";
 
-export interface Props {
-  /**
-   * @description Filter by type of promotion (e.g., "regular", "progressive")
-   */
-  type?: string;
-
-  /**
-   * @description Filter to show only active promotions
-   */
-  activeOnly?: boolean;
+interface Props {
+  accountName: string;
 }
 
 /**
- * @name list_promotions
- * @description Retrieves all active promotions and discounts from the store
+ * @name promotions_list
+ * @description Lists all promotions in your store
  */
-async function loader(
+const loader = async (
   props: Props,
   _req: Request,
-  ctx: AppContext,
-) {
-  const { vcs } = ctx;
-  const { type, activeOnly } = props;
+  _ctx: AppContext,
+) => {
+  const vcs = getClient(props.accountName);
 
   try {
     const response = await vcs
       ["GET /api/rnb/pvt/benefits/calculatorconfiguration"](
         {},
         { ...STALE },
-      ).then((res) => res.json());
-
-    // Filter the results if necessary
-    let filteredItems = response.items;
-
-    if (activeOnly) {
-      filteredItems = filteredItems.filter((promotion) => promotion.isActive);
-    }
-
-    if (type) {
-      filteredItems = filteredItems.filter((promotion) =>
-        promotion.type === type
       );
-    }
 
-    return {
-      ...response,
-      items: filteredItems,
-    };
-  } catch (error: unknown) {
+    return response;
+  } catch (error) {
     console.error("Error fetching promotions:", error);
-    throw new Error(
-      error instanceof Error
-        ? error.message
-        : "Failed to fetch promotions from VTEX",
-    );
+    throw error instanceof Error
+      ? error
+      : new Error("Failed to fetch promotions");
   }
-}
+};
 
 export const cache = "stale-while-revalidate";
-
-export const cacheKey = (props: Props, req: Request) => {
-  const url = new URL(req.url);
-  const params = new URLSearchParams();
-
-  if (props.type) {
-    params.append("type", props.type);
-  }
-
-  if (props.activeOnly !== undefined) {
-    params.append("activeOnly", props.activeOnly.toString());
-  }
-
-  params.sort();
-  url.search = params.toString();
-
-  return url.href;
-};
+export const cacheKey = (props: Props) => `promotions_${props.accountName}`;
 
 export default loader;

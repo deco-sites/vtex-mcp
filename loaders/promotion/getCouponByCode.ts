@@ -1,5 +1,6 @@
 import { STALE } from "apps/utils/fetch.ts";
 import { AppContext } from "site/apps/site.ts";
+import getClient from "site/utils/getClient.ts";
 
 export interface Coupon {
   lastModifiedUtc: string;
@@ -13,59 +14,45 @@ export interface Coupon {
   groupingKey?: string;
 }
 
-export interface Props {
-  /**
-   * @description The coupon code to retrieve
-   */
+interface Props {
+  accountName: string;
   couponCode: string;
 }
 
 /**
- * @name get_coupon_by_code
- * @description Retrieves a specific coupon by its coupon code
+ * @name coupon_by_code
+ * @description Get a specific coupon by its code
  */
-async function loader(
+const loader = async (
   props: Props,
   _req: Request,
-  ctx: AppContext,
-) {
-  const { vcs } = ctx;
-  const { couponCode } = props;
+  _ctx: AppContext,
+) => {
+  const { couponCode, accountName } = props;
+  const vcs = getClient(accountName);
 
   if (!couponCode) {
     throw new Error("Coupon code is required");
   }
 
   try {
-    const coupon = await vcs["GET /api/rnb/pvt/coupon/{couponCode}"](
-      { couponCode },
-      { ...STALE },
-    ).then((res) => res.json()) as Coupon;
+    const response = await vcs
+      ["GET /api/rnb/pvt/coupon/{couponCode}"](
+        { couponCode },
+        { ...STALE },
+      );
 
-    return {
-      success: true,
-      coupon,
-    };
-  } catch (error: unknown) {
-    console.error(`Error fetching coupon with code ${couponCode}:`, error);
-
-    if (error instanceof Response && error.status === 404) {
-      return {
-        success: false,
-        error: `Coupon with code ${couponCode} not found`,
-      };
-    }
-
-    throw new Error(
-      error instanceof Error
-        ? error.message
-        : `Failed to fetch coupon with code ${couponCode}`,
-    );
+    return response;
+  } catch (error) {
+    console.error("Error fetching coupon by code:", error);
+    throw error instanceof Error
+      ? error
+      : new Error("Failed to fetch coupon by code");
   }
-}
+};
 
 export const cache = "stale-while-revalidate";
-
-export const cacheKey = (props: Props) => `coupon-${props.couponCode}`;
+export const cacheKey = (props: Props) =>
+  `coupon_${props.couponCode}_${props.accountName}`;
 
 export default loader;

@@ -1,4 +1,5 @@
 import type { AppContext } from "site/apps/site.ts";
+import getClient from "site/utils/getClient.ts";
 
 interface Props {
   /**
@@ -128,6 +129,10 @@ interface Props {
    * @example true
    */
   f_isInstore?: boolean;
+  /**
+   * @description The account name
+   */
+  accountName: string;
 }
 
 /**
@@ -137,9 +142,9 @@ interface Props {
 export default async function loader(
   props: Props,
   _req: Request,
-  ctx: AppContext,
+  _ctx: AppContext,
 ) {
-  const { vcs } = ctx;
+  const vcs = getClient(props.accountName);
 
   const orders = await vcs["GET /api/oms/pvt/orders"](props)
     .then((res) => res.json());

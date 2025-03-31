@@ -1,7 +1,9 @@
 import { AppContext } from "site/apps/site.ts";
+import getClient from "site/utils/getClient.ts";
 
 export interface Props {
   term?: string;
+  accountName: string;
 }
 
 /**
@@ -9,11 +11,11 @@ export interface Props {
  * @description Returns the collection list
  */
 export default async function loader(
-  { term }: Props,
+  { term, accountName }: Props,
   _req: Request,
-  ctx: AppContext,
+  _ctx: AppContext,
 ) {
-  const { vcs } = ctx;
+  const vcs = getClient(accountName);
 
   const collectionResponse = term
     ? await vcs["GET /api/catalog_system/pvt/collection/search/:searchTerms"]({

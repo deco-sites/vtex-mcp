@@ -1,10 +1,9 @@
 import { STALE } from "apps/utils/fetch.ts";
 import { batch } from "apps/vtex/utils/batch.ts";
-import { isFilterParam } from "apps/vtex/utils/legacy.ts";
 import { pickSku } from "apps/vtex/utils/transform.ts";
 import type { CrossSellingType, LegacyProduct } from "apps/vtex/utils/types.ts";
 import { AppContext } from "site/apps/site.ts";
-import { getSegmentFromBag } from "site/sdk/segment.ts";
+import getClient from "site/utils/getClient.ts";
 import productList from "./productListBySkuIds.ts";
 
 export interface Props {
@@ -25,6 +24,10 @@ export interface Props {
    * @description ProductGroup ID
    */
   id?: string;
+  /**
+   * @description The account name
+   */
+  accountName: string;
 }
 
 /**
@@ -36,7 +39,7 @@ async function loader(
   req: Request,
   ctx: AppContext,
 ): Promise<LegacyProduct[] | null> {
-  const { vcsDeprecated } = ctx;
+  const vcsDeprecated = getClient(props.accountName);
   const {
     crossSelling = "similars",
     count,
@@ -94,7 +97,18 @@ async function loader(
   const batchedIds = batch(relatedIds, 50);
 
   const relatedProductsResults = await Promise.allSettled(
-    batchedIds.map((ids) => productList({ similars: false, ids }, req, ctx)),
+    batchedIds.map((ids) =>
+      productList(
+        {
+          similars: false,
+          ids,
+          accountName: props.accountName,
+          select: ["all"],
+        },
+        req,
+        ctx,
+      )
+    ),
   );
 
   const relatedProducts = relatedProductsResults
@@ -116,35 +130,5 @@ async function loader(
 
   return relatedProducts;
 }
-
-export const cache = "stale-while-revalidate";
-
-export const cacheKey = (props: Props, req: Request, ctx: AppContext) => {
-  const url = new URL(req.url);
-
-  if (url.searchParams.has("ft")) {
-    return null;
-  }
-
-  const segment = getSegmentFromBag(ctx)?.token || "";
-  const params = new URLSearchParams([
-    ["slug", props.slug ?? ""],
-    ["id", props.id ?? ""],
-    ["crossSelling", props.crossSelling],
-    ["count", (props.count ?? 0).toString()],
-    ["segment", segment],
-  ]);
-
-  url.searchParams.forEach((value, key) => {
-    if (!isFilterParam(key)) return;
-    params.append(key, value);
-  });
-
-  params.sort();
-
-  url.search = params.toString();
-
-  return url.href;
-};
 
 export default loader;

@@ -1,4 +1,5 @@
 import { AppContext } from "site/apps/site.ts";
+import getClient from "site/utils/getClient.ts";
 
 interface Props {
   /**
@@ -9,6 +10,10 @@ interface Props {
    * @description The number of brands to return
    */
   count?: number;
+  /**
+   * @description The account name
+   */
+  accountName: string;
 }
 
 /**
@@ -18,12 +23,12 @@ interface Props {
 const loaders = async (
   props: Props,
   _req: Request,
-  ctx: AppContext,
+  _ctx: AppContext,
 ) => {
-  const { filterInactive = false, count = 100 } = props;
-  const { vcsDeprecated } = ctx;
+  const { filterInactive = false, count = 100, accountName } = props;
+  const vcs = getClient(accountName);
 
-  const brands = await vcsDeprecated["GET /api/catalog_system/pub/brand/list"](
+  const brands = await vcs["GET /api/catalog_system/pub/brand/list"](
     {},
   )
     .then((r) => r.json())
@@ -43,12 +48,4 @@ const loaders = async (
 export default loaders;
 
 export const cache = "stale-while-revalidate";
-export const cacheKey = (props: Props) => {
-  const url = new URL("https://example.com");
-  url.searchParams.set(
-    "filterInactive",
-    props.filterInactive?.toString() ?? "false",
-  );
-  url.searchParams.set("count", props.count?.toString() ?? "100");
-  return url.search;
-};
+export const cacheKey = (props: Props) => `brands_${props.accountName}`;

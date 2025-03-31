@@ -1,11 +1,16 @@
-import type { AppContext } from "site/apps/site.ts";
 import type { ProductBalance } from "apps/vtex/utils/types.ts";
+import type { AppContext } from "site/apps/site.ts";
+import getClient from "site/utils/getClient.ts";
 
 interface Props {
   /**
    * @description Product SKU
    */
   skuId: number;
+  /**
+   * @description The account name
+   */
+  accountName: string;
 }
 
 /**
@@ -15,10 +20,10 @@ interface Props {
 export default async function loader(
   props: Props,
   _req: Request,
-  ctx: AppContext,
+  _ctx: AppContext,
 ): Promise<ProductBalance[]> {
-  const { skuId } = props;
-  const { vcs } = ctx;
+  const { skuId, accountName } = props;
+  const vcs = getClient(accountName);
 
   try {
     const stockByStore = await vcs

@@ -1,9 +1,9 @@
 import { STALE } from "apps/utils/fetch.ts";
 import { LegacyProduct } from "apps/vtex/utils/types.ts";
 import type { AppContext } from "site/apps/site.ts";
-import { getSegmentFromBag } from "site/sdk/segment.ts";
 import type { ProductProperties } from "site/sdk/vcs.ts";
 import { withIsSimilarTo } from "site/sdk/withIsSimilarTo.ts";
+import getClient from "site/utils/getClient.ts";
 
 export interface Props {
   slug: string;
@@ -47,6 +47,10 @@ export interface Props {
     | "skuSpecifications"
     | "specificationGroups"
   )[];
+  /**
+   * @description The account name
+   */
+  accountName: string;
 }
 
 /**
@@ -58,7 +62,7 @@ async function loader(
   req: Request,
   ctx: AppContext,
 ): Promise<LegacyProduct & { similars: LegacyProduct[] | null } | null> {
-  const { vcsDeprecated } = ctx;
+  const vcsDeprecated = getClient(props.accountName);
   const { slug, select } = props;
 
   const lowercaseSlug = slug?.toLowerCase() || "/";
@@ -88,6 +92,7 @@ async function loader(
 
   const partialProduct = select?.length && !select.includes("all")
     ? select.reduce((acc, prop) => {
+      // @ts-ignore ignore
       acc[prop] = product[prop];
       return acc;
       // deno-lint-ignore no-explicit-any
@@ -99,31 +104,5 @@ async function loader(
     similars,
   };
 }
-
-export const cache = "stale-while-revalidate";
-
-export const cacheKey = (props: Props, req: Request, ctx: AppContext) => {
-  const url = new URL(req.url);
-
-  if (url.searchParams.has("ft")) {
-    return null;
-  }
-  // deno-lint-ignore no-explicit-any
-  const segment = getSegmentFromBag(ctx as any)?.token ?? "";
-  const skuId = url.searchParams.get("skuId") ?? "";
-
-  const params = new URLSearchParams([
-    ["slug", props.slug],
-    ["segment", segment],
-    ["skuId", skuId],
-    ["select", props.select?.sort().join(",") ?? ""],
-  ]);
-
-  params.sort();
-
-  url.search = params.toString();
-
-  return url.href;
-};
 
 export default loader;

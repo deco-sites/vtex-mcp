@@ -1,16 +1,10 @@
 import { STALE } from "apps/utils/fetch.ts";
-import { isFilterParam } from "apps/vtex/utils/legacy.ts";
 import { AppContext } from "site/apps/site.ts";
+import getClient from "site/utils/getClient.ts";
 
-export interface Props {
-  /**
-   * @description SKU ID to get inventory for
-   */
+interface Props {
+  accountName: string;
   skuId: string;
-
-  /**
-   * @description Warehouse ID to get inventory for
-   */
   warehouseId: string;
 }
 
@@ -21,10 +15,10 @@ export interface Props {
 const loader = async (
   props: Props,
   _req: Request,
-  ctx: AppContext,
+  _ctx: AppContext,
 ) => {
-  const { vcs } = ctx;
-  const { skuId, warehouseId } = props;
+  const { skuId, warehouseId, accountName } = props;
+  const vcs = getClient(accountName);
 
   if (!skuId) {
     throw new Error("SKU ID is required");
@@ -51,27 +45,7 @@ const loader = async (
 };
 
 export const cache = "stale-while-revalidate";
-
-export const cacheKey = (
-  props: Props,
-  req: Request,
-) => {
-  const url = new URL(req.url);
-
-  const params = new URLSearchParams([
-    ["skuId", props.skuId],
-    ["warehouseId", props.warehouseId],
-  ]);
-
-  url.searchParams.forEach((value, key) => {
-    if (!isFilterParam(key)) return;
-    params.append(key, value);
-  });
-
-  params.sort();
-  url.search = params.toString();
-
-  return url.href;
-};
+export const cacheKey = (props: Props) =>
+  `inventory_sku_${props.skuId}_warehouse_${props.warehouseId}`;
 
 export default loader;

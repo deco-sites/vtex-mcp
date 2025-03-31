@@ -1,16 +1,21 @@
 import { STALE } from "apps/utils/fetch.ts";
 import { AppContext } from "site/apps/site.ts";
+import getClient from "site/utils/getClient.ts";
+
+interface Props {
+  accountName: string;
+}
 
 /**
  * @name warehouses_list
  * @description Lists all warehouses set up in your store
  */
 const loader = async (
-  _props: unknown,
+  props: Props,
   _req: Request,
-  ctx: AppContext,
+  _ctx: AppContext,
 ) => {
-  const { vcs } = ctx;
+  const vcs = getClient(props.accountName);
 
   try {
     const response = await vcs
@@ -29,6 +34,6 @@ const loader = async (
 };
 
 export const cache = "stale-while-revalidate";
-export const cacheKey = () => "warehouses";
+export const cacheKey = (props: Props) => `warehouses_${props.accountName}`;
 
 export default loader;

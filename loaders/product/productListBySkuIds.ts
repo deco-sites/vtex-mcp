@@ -1,9 +1,8 @@
 import { STALE } from "apps/utils/fetch.ts";
-import { isFilterParam } from "apps/vtex/utils/legacy.ts";
 import { LegacyProduct } from "apps/vtex/utils/types.ts";
 import { AppContext } from "site/apps/site.ts";
-import { getSegmentFromBag } from "site/sdk/segment.ts";
 import { ProductProperties } from "site/sdk/vcs.ts";
+import getClient from "site/utils/getClient.ts";
 export interface Props {
   /**
    * @description SKU ids to retrieve
@@ -49,6 +48,10 @@ export interface Props {
     | "skuSpecifications"
     | "specificationGroups"
   )[];
+  /**
+   * @description The account name
+   */
+  accountName: string;
 }
 
 /**
@@ -58,9 +61,9 @@ export interface Props {
 const loader = async (
   props: Props,
   _req: Request,
-  ctx: AppContext,
+  _ctx: AppContext,
 ) => {
-  const { vcsDeprecated } = ctx;
+  const vcsDeprecated = getClient(props.accountName);
 
   if (!props.ids || props.ids.length === 0) {
     throw new Error("At least one SKU ID is required");
@@ -91,6 +94,7 @@ const loader = async (
   const partialProducts = props.select?.length && !props.select.includes("all")
     ? vtexProducts.map((product) =>
       props.select!.reduce((acc, prop) => {
+        // @ts-ignore ignore
         acc[prop] = product[prop];
         return acc;
         // deno-lint-ignore no-explicit-any
@@ -99,40 +103,6 @@ const loader = async (
     : vtexProducts;
 
   return partialProducts as LegacyProduct[];
-};
-
-export const cache = "stale-while-revalidate";
-
-export const cacheKey = (
-  props: Props,
-  req: Request,
-  ctx: AppContext,
-) => {
-  const url = new URL(req.url);
-
-  // Avoid cache on loader call over call
-  if (ctx.isInvoke) {
-    return null;
-  }
-
-  const segment = getSegmentFromBag(ctx)?.token ?? "";
-  const skuIds = [...props.ids || []].sort();
-
-  const params = new URLSearchParams([
-    ["skuids", skuIds.join(",")],
-    ["segment", segment],
-    ["select", props.select?.sort().join(",") ?? ""],
-  ]);
-
-  url.searchParams.forEach((value, key) => {
-    if (!isFilterParam(key)) return;
-    params.append(key, value);
-  });
-
-  params.sort();
-  url.search = params.toString();
-
-  return url.href;
 };
 
 export default loader;
