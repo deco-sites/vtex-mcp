@@ -77,7 +77,7 @@ const loader = async (
   const params = {
     _from: 0,
     _to: Math.max((props.count || 12) - 1, 0),
-    fq: props.term ? [encodeURIComponent(props.term)] : [],
+    fq: [],
   } as {
     _from?: number;
     _to?: number;
