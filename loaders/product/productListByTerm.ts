@@ -111,6 +111,10 @@ const loader = async (
       props.select!.reduce((acc, prop) => {
         // @ts-ignore ignore
         acc[prop] = product[prop];
+        // the return was too long, so we limit the items to 3
+        if (prop === "items") {
+          acc[prop] = acc[prop].slice(0, 3);
+        }
         return acc;
         // deno-lint-ignore no-explicit-any
       }, {} as Record<ProductProperties, any>)
