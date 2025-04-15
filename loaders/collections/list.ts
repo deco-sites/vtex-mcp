@@ -13,9 +13,9 @@ export interface Props {
 export default async function loader(
   { term, accountName }: Props,
   _req: Request,
-  _ctx: AppContext,
+  ctx: AppContext,
 ) {
-  const vcs = getClient(accountName);
+  const vcs = getClient(accountName, ctx);
 
   const collectionResponse = term
     ? await vcs["GET /api/catalog_system/pvt/collection/search/:searchTerms"]({

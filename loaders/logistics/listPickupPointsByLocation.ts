@@ -28,10 +28,10 @@ interface Props {
 export default async function loader(
   props: Props,
   _req: Request,
-  _ctx: AppContext,
+  ctx: AppContext,
 ) {
   const { geoCoordinates, postalCode, countryCode, accountName } = props;
-  const vcs = getClient(accountName);
+  const vcs = getClient(accountName, ctx);
 
   const _props = geoCoordinates
     ? { geoCoordinates }

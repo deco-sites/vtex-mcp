@@ -26,7 +26,7 @@ export default async function loader(
   _req: Request,
   ctx: AppContext,
 ): Promise<Category | Category[]> {
-  const vcs = getClient(accountName);
+  const vcs = getClient(accountName, ctx);
 
   return await vcs
     ["GET /api/catalog_system/pub/category/tree/:level"]({

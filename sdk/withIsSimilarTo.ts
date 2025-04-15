@@ -10,6 +10,7 @@ export const withIsSimilarTo = async (
     {
       crossSelling: "similars",
       id: productId,
+      accountName: ctx.account,
     },
     req,
     ctx,

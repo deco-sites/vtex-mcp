@@ -13,9 +13,9 @@ interface Props {
 const loader = async (
   props: Props,
   _req: Request,
-  _ctx: AppContext,
+  ctx: AppContext,
 ) => {
-  const vcs = getClient(props.accountName);
+  const vcs = getClient(props.accountName, ctx);
 
   try {
     const response = await vcs

@@ -62,9 +62,9 @@ export interface Props {
 const loader = async (
   props: Props,
   _req: Request,
-  _ctx: AppContext,
+  ctx: AppContext,
 ) => {
-  const vcsDeprecated = getClient(props.accountName);
+  const vcsDeprecated = getClient(props.accountName, ctx);
 
   if (!props.productIds || props.productIds.length === 0) {
     throw new Error("At least one product ID is required");

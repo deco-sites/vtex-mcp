@@ -16,9 +16,9 @@ interface Props {
 export default async function loader(
   props: Props,
   _req: Request,
-  _ctx: AppContext,
+  ctx: AppContext,
 ): Promise<SalesChannel[]> {
-  const vcs = getClient(props.accountName);
+  const vcs = getClient(props.accountName, ctx);
 
   const salesChannel = await vcs
     ["GET /api/catalog_system/pvt/saleschannel/list"]({})

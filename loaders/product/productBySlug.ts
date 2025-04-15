@@ -62,7 +62,7 @@ async function loader(
   req: Request,
   ctx: AppContext,
 ): Promise<LegacyProduct & { similars: LegacyProduct[] | null } | null> {
-  const vcsDeprecated = getClient(props.accountName);
+  const vcsDeprecated = getClient(props.accountName, ctx);
   const { slug, select } = props;
 
   const lowercaseSlug = slug?.toLowerCase() || "/";

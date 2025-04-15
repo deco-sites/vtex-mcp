@@ -39,7 +39,7 @@ async function loader(
   req: Request,
   ctx: AppContext,
 ): Promise<LegacyProduct[] | null> {
-  const vcsDeprecated = getClient(props.accountName);
+  const vcsDeprecated = getClient(props.accountName, ctx);
   const {
     crossSelling = "similars",
     count,

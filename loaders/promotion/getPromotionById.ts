@@ -14,10 +14,10 @@ interface Props {
 const loader = async (
   props: Props,
   _req: Request,
-  _ctx: AppContext,
+  ctx: AppContext,
 ) => {
   const { promotionId, accountName } = props;
-  const vcs = getClient(accountName);
+  const vcs = getClient(accountName, ctx);
 
   if (!promotionId) {
     throw new Error("Promotion ID is required");

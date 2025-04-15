@@ -70,9 +70,9 @@ export interface Props {
 const loader = async (
   props: Props,
   _req: Request,
-  _ctx: AppContext,
+  ctx: AppContext,
 ) => {
-  const vcsDeprecated = getClient(props.accountName);
+  const vcsDeprecated = getClient(props.accountName, ctx);
 
   const params = {
     _from: 0,

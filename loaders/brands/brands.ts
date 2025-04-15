@@ -23,10 +23,10 @@ interface Props {
 const loaders = async (
   props: Props,
   _req: Request,
-  _ctx: AppContext,
+  ctx: AppContext,
 ) => {
   const { filterInactive = false, count = 100, accountName } = props;
-  const vcs = getClient(accountName);
+  const vcs = getClient(accountName, ctx);
 
   const brands = await vcs["GET /api/catalog_system/pub/brand/list"](
     {},

@@ -69,9 +69,9 @@ export interface Props {
 const loader = async (
   props: Props,
   _req: Request,
-  _ctx: AppContext,
+  ctx: AppContext,
 ): Promise<LegacyProduct[]> => {
-  const vcsDeprecated = getClient(props.accountName);
+  const vcsDeprecated = getClient(props.accountName, ctx);
 
   if (!props.collection) {
     throw new Error("Collection ID is required");

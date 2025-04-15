@@ -26,10 +26,10 @@ interface Props {
 const loader = async (
   props: Props,
   _req: Request,
-  _ctx: AppContext,
+  ctx: AppContext,
 ) => {
   const { couponCode, accountName } = props;
-  const vcs = getClient(accountName);
+  const vcs = getClient(accountName, ctx);
 
   if (!couponCode) {
     throw new Error("Coupon code is required");

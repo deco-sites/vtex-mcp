@@ -142,9 +142,9 @@ interface Props {
 export default async function loader(
   props: Props,
   _req: Request,
-  _ctx: AppContext,
+  ctx: AppContext,
 ) {
-  const vcs = getClient(props.accountName);
+  const vcs = getClient(props.accountName, ctx);
 
   const orders = await vcs["GET /api/oms/pvt/orders"](props)
     .then((res) => res.json());

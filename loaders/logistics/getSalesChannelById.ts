@@ -16,7 +16,7 @@ export default async function loader(
   _req: Request,
   ctx: AppContext,
 ): Promise<SalesChannel> {
-  const vcs = getClient(ctx.account);
+  const vcs = getClient(props.accountName, ctx);
 
   const salesChannel = await vcs
     ["GET /api/catalog_system/pub/saleschannel/:salesChannelId"]({

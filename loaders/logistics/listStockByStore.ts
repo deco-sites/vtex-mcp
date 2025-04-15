@@ -20,10 +20,10 @@ interface Props {
 export default async function loader(
   props: Props,
   _req: Request,
-  _ctx: AppContext,
+  ctx: AppContext,
 ): Promise<ProductBalance[]> {
   const { skuId, accountName } = props;
-  const vcs = getClient(accountName);
+  const vcs = getClient(accountName, ctx);
 
   try {
     const stockByStore = await vcs

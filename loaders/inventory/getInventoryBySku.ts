@@ -14,10 +14,10 @@ interface Props {
 const loader = async (
   props: Props,
   _req: Request,
-  _ctx: AppContext,
+  ctx: AppContext,
 ) => {
   const { skuId, accountName } = props;
-  const vcs = getClient(accountName);
+  const vcs = getClient(accountName, ctx);
 
   if (!skuId) {
     throw new Error("SKU ID is required");

@@ -18,9 +18,9 @@ export interface Props {
 export default async function loader(
   props: Props,
   _req: Request,
-  _ctx: AppContext,
+  ctx: AppContext,
 ) {
-  const vcs = getClient(props.accountName);
+  const vcs = getClient(props.accountName, ctx);
   const { clientEmail, page = "0", per_page = "15" } = props;
 
   const ordersResponse = await vcs

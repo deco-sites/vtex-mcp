@@ -51,7 +51,7 @@ export default async function loader(
   req: Request,
   ctx: AppContext,
 ): Promise<Document[]> {
-  const vcs = getClient(props.accountName);
+  const vcs = getClient(props.accountName, ctx);
   const { acronym, fields, where, sort, skip = 0, take = 10 } = props;
   const { cookie } = parseCookie(req.headers, ctx.account);
   const limits = resourceRange(skip, take);
