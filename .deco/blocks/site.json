@@ -40,12 +40,12 @@
   "appKey": {
     "__resolveType": "website/loaders/secret.ts",
     "name": "VTEX_APP_KEY",
-    "encrypted": "9a95106113ef2e2770c006f0dd514a9b58864e388d59ab6e8ef97081d0ff0574"
+    "encrypted": "9a95106113ef2e2770c006f0dd514a9bf4a92370b3d0f3e9fb0dbabcdb689562"
   },
   "appToken": {
     "__resolveType": "website/loaders/secret.ts",
     "name": "VTEX_APP_TOKEN",
-    "encrypted": "9b67cec9935693515bf531737f417279bd7625554275ceb62c8d2edcf24db24ac77ad645162521a59a1ee44849bc9df69c94cf085d0379e775ecdf1a2559a373fbca1511790466ea7d90e8d2c2b06853ff55f2944ee12b66c39f951be9da611ef53507ed931a15f804b706d9fb8eaaae6024dc982304c022da38eba75d078976cd26fa177bd8765afb37f00583a77cf1"
+    "encrypted": "e43ec782cd2ebeeeb7bae6b4b4734abcff7584c222e90f7c95e18c19ef30ee41eb1e3083ba5e3d975b9e5b205a2a4f9770b9e61a70a1d2dcea5c036bbe4f778b3e4925843ecb93a7417678be8c412d5b621e7a0903aef86d2482a1d9ee66f314afc50d70edd1a344adeb1a5f940fbe548eae22f13656b0f876bf9009a156b2b0c1fa0d6b98d9e7f264cb96ca126e626a"
   },
   "disableActions": false
 }
