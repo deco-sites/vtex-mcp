@@ -25,7 +25,7 @@ const loader = async (
 
   try {
     const response = await vcs
-      ["GET /api/logistics/pvt/inventory/skus/{skuId}"](
+      ["GET /api/logistics/pvt/inventory/skus/:skuId"](
         { skuId },
         { ...STALE },
       );

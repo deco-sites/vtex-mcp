@@ -5,6 +5,7 @@ export interface ProductData {
   Name: string;
   CategoryPath: string;
   BrandId: number;
+  CategoryId: number;
   LinkId?: string;
   RefId?: string;
   IsVisible?: boolean;
@@ -48,7 +49,7 @@ async function action(
   }
 
   try {
-    const response = await vcs["PUT /api/catalog/pvt/product/{productId}"]({
+    const response = await vcs["PUT /api/catalog/pvt/product/:productId"]({
       productId,
     }, {
       headers: {

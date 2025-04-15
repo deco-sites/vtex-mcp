@@ -37,7 +37,7 @@ const loader = async (
 
   try {
     const response = await vcs
-      ["GET /api/rnb/pvt/coupon/{couponCode}"](
+      ["GET /api/rnb/pvt/coupon/:couponCode"](
         { couponCode },
         { ...STALE },
       );

@@ -67,7 +67,7 @@ export interface VCS extends OpenAPI {
     };
   };
 
-  "PUT /api/catalog/pvt/product/{productId}": {
+  "PUT /api/catalog/pvt/product/:productId": {
     body: {
       Name: string;
       CategoryPath: string;
@@ -88,6 +88,7 @@ export interface VCS extends OpenAPI {
       AdWordsRemarketingCode?: string;
       LomadeeCampaignCode?: string;
       Score?: number;
+      CategoryId: number;
     };
     response: {
       Id: number;
@@ -113,7 +114,7 @@ export interface VCS extends OpenAPI {
       Score: number;
     };
   };
-  "PUT /api/catalog/pvt/product/{productId}/specification": {
+  "PUT /api/catalog/pvt/product/:productId/specification": {
     body: {
       SpecificationId: number;
       FieldValues: string[];
@@ -497,7 +498,7 @@ export interface VCS extends OpenAPI {
     };
   };
 
-  "GET /api/rnb/pvt/coupon/{couponCode}": {
+  "GET /api/rnb/pvt/coupon/:couponCode": {
     params: {
       couponCode: string;
     };
@@ -514,7 +515,7 @@ export interface VCS extends OpenAPI {
     };
   };
 
-  "GET /api/logistics/pvt/inventory/skus/{skuId}": {
+  "GET /api/logistics/pvt/inventory/skus/:skuId": {
     params: {
       skuId: string;
     };
@@ -533,7 +534,7 @@ export interface VCS extends OpenAPI {
     };
   };
 
-  "GET /api/logistics/pvt/inventory/items/{skuId}/warehouses/{warehouseId}": {
+  "GET /api/logistics/pvt/inventory/items/:skuId/warehouses/:warehouseId": {
     params: {
       skuId: string;
       warehouseId: string;

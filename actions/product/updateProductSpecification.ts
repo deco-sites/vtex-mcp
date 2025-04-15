@@ -32,7 +32,7 @@ async function action(
 
   try {
     const response = await vcs
-      ["PUT /api/catalog/pvt/product/{productId}/specification"]({
+      ["PUT /api/catalog/pvt/product/:productId/specification"]({
         productId,
       }, {
         body: specifications,

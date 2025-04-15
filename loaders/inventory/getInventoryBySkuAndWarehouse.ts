@@ -30,10 +30,12 @@ const loader = async (
 
   try {
     const response = await vcs
-      ["GET /api/logistics/pvt/inventory/items/{skuId}/warehouses/{warehouseId}"](
+      ["GET /api/logistics/pvt/inventory/items/:skuId/warehouses/:warehouseId"](
         { skuId, warehouseId },
         { ...STALE },
       );
+
+    console.log("response", response);
 
     return response;
   } catch (error) {
